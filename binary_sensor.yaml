@@ -1,0 +1,10 @@
+- platform: threshold
+  name: "air_con_running"
+  entity_id: sensor.air_conditioner_current_consumption
+  upper: 10
+  hysteresis: 0.1
+
+- platform: meteoalarm
+  name: Weather Warning
+  country: united-kingdom
+  province: East Midlands

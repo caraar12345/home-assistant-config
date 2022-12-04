@@ -1,0 +1,21 @@
+learn_soundbar_ir:
+  sequence:
+    service: remote.learn_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      device: soundbar_ir
+      command:
+        - power
+        - mute
+        - vol_down
+        - vol_up
+        - sub_down
+        - sub_up
+        - trb_down
+        - trb_up
+        - src_coax
+        - src_hdmi_arc
+        - src_aux
+        - src_optical
+        - src_bluetooth

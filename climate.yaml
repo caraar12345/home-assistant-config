@@ -1,0 +1,8 @@
+- platform: smartir
+  name: Air Conditioner
+  unique_id: air_con
+  device_code: 3300
+  controller_data: remote.broadlink_remote
+  temperature_sensor: sensor.living_room_environment_temperature
+  humidity_sensor: sensor.living_room_environment_humidity
+  power_sensor: binary_sensor.air_con_running

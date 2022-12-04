@@ -1,0 +1,10 @@
+host: localhost
+port: 8086
+api_version: 2
+max_retries: 3
+default_measurement: state
+token: !secret influxdb_token
+organization: !secret influxdb_org
+bucket: home_assistant
+ssl: false
+verify_ssl: false

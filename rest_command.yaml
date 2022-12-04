@@ -1,0 +1,11 @@
+google_home_broadcast:
+  url: "http://6a3d001f-assistant-relay:3000/assistant"
+  method: "post"
+  headers:
+    "Content-Type": "application/json;charset=utf-8"
+  payload: >-
+    {
+      "user":"aaronc",
+      "command":"{{ command }}",
+      "broadcast":"{{ broadcast | default('true') }}"
+    }

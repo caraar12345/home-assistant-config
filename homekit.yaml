@@ -1,0 +1,71 @@
+- port: 21066
+  name: Doorbell
+  mode: accessory
+  filter:
+    include_entities:
+      - camera.doorbell_live
+  entity_config:
+    camera.doorbell:
+      linked_battery_sensor: sensor.doorbell_battery
+      linked_doorbell_sensor: binary_sensor.doorbell_ding
+      linked_motion_sensor: binary_sensor.door
+      low_battery_threshold: 60
+      support_audio: true
+      video_codec: copy
+
+- port: 21080
+  name: Alarmo
+  mode: accessory
+  filter:
+    include_domains:
+      - alarm_control_panel
+  entity_config:
+    alarm_control_panel.alarmo:
+      code: !secret homekit_alarmo
+
+- port: 21064
+  name: HASS Bridge
+  mode: bridge
+  filter:
+    include_domains:
+      - climate
+      - cover
+      - fan
+      - light
+      - lock
+      - switch
+      - binary_sensor
+      - button
+      - sensor
+      - media_player
+    include_entities:
+      - binary_sensor.doorbell_ding
+      - binary_sensor.doorbell_motion
+      - binary_sensor.front_door_inside_motion_occupancy
+      - binary_sensor.heating_open_window
+      - binary_sensor.kitchen_motion
+      - binary_sensor.living_room_motion
+      - binary_sensor.living_room_left_window_contact
+      - binary_sensor.stairs_motion
+      - media_player.soundbar
+    include_entity_globs:
+      - sensor.air_conditioner*
+      - sensor.*temperature
+      - sensor.*humidity
+      - sensor.doorbell*
+    exclude_entities:
+      - switch.pi_hole
+      - sensor.whole_flat_tado_outdoor_temperature
+      - sensor.quest_battery_temperature
+      - sensor.living_room_blind_device_temperature
+      - sensor.processor_temperature
+      - switch.dishwasher_2
+    exclude_entity_globs:
+      - binary_sensor.*
+      - "*.browser_*"
+      - media_player.*
+      - sensor.*
+      - switch.doorbell*
+      - "*fire_tablet*"
+      - "*fire_wallpanel*"
+      - "*fire_hd*"

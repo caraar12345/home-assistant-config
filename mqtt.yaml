@@ -1,0 +1,156 @@
+binary_sensor:
+  - name: "Fire HD Charging"
+    state_topic: !secret fully_kiosk_device_info_topic
+    device_class: "battery_charging"
+    unique_id: "fire_wallpanel_fkb_charging"
+    value_template: "{{ value_json['isPlugged'] }}"
+    payload_on: true
+    payload_off: false
+    availability:
+      - topic: !secret fully_kiosk_device_info_topic
+        value_template: "{{ value_json['mqttConnected'] }}"
+        payload_available: true
+
+  - name: "Soundbar MQTT"
+    state_topic: "cec/cec/5"
+    device_class: "sound"
+    unique_id: "soundbar_mqtt_cec"
+    payload_on: "on"
+    payload_off: "off"
+
+sensor:
+  - name: "Home Instant Electricity"
+    device_class: power
+    state_topic: !secret hildebrand_glow_topic
+    state_class: measurement
+    unit_of_measurement: "W"
+    value_template: "{{ value_json['elecMtr']['0702']['04']['00']|int(base=16) }}"
+    unique_id: "hildebrand_hosted_mqtt_home_instant_electricity"
+    icon: "mdi:flash"
+
+  - name: "Home Electricity"
+    state_topic: !secret hildebrand_glow_topic
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['elecMtr']['0702']['00']['00']|int(base=16) * value_json['elecMtr']['0702']['03']['01']|int(base=16) / value_json['elecMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total
+    unique_id: "hildebrand_hosted_mqtt_home_electricity"
+    icon: "mdi:flash"
+
+  - name: "Home Daily Electricity"
+    state_topic: !secret hildebrand_glow_topic
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['elecMtr']['0702']['04']['01']|int(base=16) * value_json['elecMtr']['0702']['03']['01']|int(base=16) / value_json['elecMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total_increasing
+    unique_id: "hildebrand_hosted_mqtt_home_daily_electricity"
+    icon: "mdi:flash"
+
+  - name: "Home Weekly Electricity"
+    state_topic: !secret hildebrand_glow_topic
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['elecMtr']['0702']['04']['30']|int(base=16) * value_json['elecMtr']['0702']['03']['01']|int(base=16) / value_json['elecMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total_increasing
+    unique_id: "hildebrand_hosted_mqtt_home_weekly_electricity"
+    icon: "mdi:flash"
+
+  - name: "Home Monthly Electricity"
+    state_topic: !secret hildebrand_glow_topic
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['elecMtr']['0702']['04']['40']|int(base=16) * value_json['elecMtr']['0702']['03']['01']|int(base=16) / value_json['elecMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total_increasing
+    unique_id: "hildebrand_hosted_mqtt_home_monthly_electricity"
+    icon: "mdi:flash"
+
+  - name: "Home Gas (m3)"
+    state_topic: !secret hildebrand_glow_topic
+    unit_of_measurement: "m³"
+    device_class: gas
+    value_template: "{{ value_json['gasMtr']['0702']['00']['00']|int(base=16) * value_json['gasMtr']['0702']['03']['01']|int(base=16) / value_json['gasMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total
+    unique_id: "hildebrand_hosted_mqtt_home_gas"
+    icon: "mdi:fire"
+
+  - name: "Home Daily Gas"
+    state_topic: !secret hildebrand_glow_topic
+    unit_of_measurement: "kWh"
+    device_class: energy
+    value_template: "{{ value_json['gasMtr']['0702']['0C']['01']|int(base=16)  * value_json['gasMtr']['0702']['03']['01']|int(base=16) / value_json['gasMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total_increasing
+    unique_id: "hildebrand_hosted_mqtt_home_daily_gas"
+    icon: "mdi:fire"
+
+  - name: "Home Weekly Gas"
+    state_topic: !secret hildebrand_glow_topic
+    unit_of_measurement: "kWh"
+    device_class: energy
+    value_template: "{{ value_json['gasMtr']['0702']['0C']['30']|int(base=16)  * value_json['gasMtr']['0702']['03']['01']|int(base=16) / value_json['gasMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total_increasing
+    unique_id: "hildebrand_hosted_mqtt_home_weekly_gas"
+    icon: "mdi:fire"
+
+  - name: "Home Monthly Gas"
+    state_topic: !secret hildebrand_glow_topic
+    unit_of_measurement: "kWh"
+    device_class: energy
+    value_template: "{{ value_json['gasMtr']['0702']['0C']['40']|int(base=16)  * value_json['gasMtr']['0702']['03']['01']|int(base=16) / value_json['gasMtr']['0702']['03']['02']|int(base=16) }}"
+    state_class: total_increasing
+    unique_id: "hildebrand_hosted_mqtt_home_monthly_gas"
+    icon: "mdi:fire"
+
+  - name: "Fire HD Battery Level"
+    state_topic: !secret fully_kiosk_device_info_topic
+    device_class: battery
+    value_template: "{{ value_json['batteryLevel'] }}"
+    unique_id: "fire_wallpanel_fkb_battery_level"
+    unit_of_measurement: "%"
+
+  - name: "CAD HAN Status"
+    state_topic: !secret glow_cad_local_mqtt_state_topic
+    value_template: "{{ value_json['han']['status'] }}"
+    unique_id: "glowmarkt_local_mqtt_cad_han_status"
+    json_attributes_topic: !secret glow_cad_local_mqtt_state_topic
+
+  - name: SMS2MQTT Signal Strength
+    state_topic: sms2mqtt/signal
+    value_template: "{{ value_json['SignalStrength'] }}"
+    unique_id: sms2mqtt_signal_strength_1
+    json_attributes_topic: sms2mqtt/signal
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement
+    unit_of_measurement: dBm
+
+  - name: SMS2MQTT Signal Percentage
+    state_topic: sms2mqtt/signal
+    value_template: "{{ value_json['SignalPercent'] }}"
+    unique_id: sms2mqtt_signal_percent_1
+    json_attributes_topic: sms2mqtt/signal
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement
+    unit_of_measurement: "%"
+
+  - name: SMS2MQTT Network Name
+    state_topic: sms2mqtt/network
+    value_template: "{{ value_json['NetworkName'] }}"
+    unique_id: sms2mqtt_network_name_1
+    json_attributes_topic: sms2mqtt/network
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement
+
+  - name: SMS2MQTT Latest Message
+    state_topic: sms2mqtt/received
+    value_template: "{{ value_json['text'] }}"
+    unique_id: sms2mqtt_received_sms_1
+    json_attributes_topic: sms2mqtt/received
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement

@@ -1,0 +1,26 @@
+- name: email_to_monitoring
+  platform: sendgrid
+  api_key: !secret sendgrid_api_key
+  sender: !secret hass_email
+  recipient: !secret monitoring_email
+
+- name: google_broadcast
+  platform: rest
+  resource: http://6a3d001f-assistant-relay:3000/assistant
+  method: POST_JSON
+  headers:
+    "Content-Type": "application/json;charset=utf-8"
+  message_param_name: command
+  data:
+    user: aaronc
+    broadcast: "{{ data.broadcast | default('true') }}"
+
+- name: web_notify
+  platform: html5
+  vapid_pub_key: !secret vapid_pub_key
+  vapid_prv_key: !secret vapid_prv_key
+  vapid_email: !secret gmail_email
+
+- name: sms_aaron
+  platform: sms
+  recipient: !secret my_mobile_number

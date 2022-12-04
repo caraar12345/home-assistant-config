@@ -1,0 +1,4 @@
+#- platform: generic
+#  name: Doorbell
+#  still_image_url: https://hass-new.adhd.energy{{ states.camera.doorbell.attributes.entity_picture }}
+#  stream_source: rtsp://rtsp-ring:zBj7xZZiVPGQE6j2zgGB3n3T374CY2A@03cabcc9-ring-mqtt:8554/9c7613761688_live

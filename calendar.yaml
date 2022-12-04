@@ -1,0 +1,4 @@
+- platform: ics_calendar
+  calendars:
+    - name: "On-call Schedule"
+      url: pagerduty_oncall_ics_url

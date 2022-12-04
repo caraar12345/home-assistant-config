@@ -1,0 +1,34 @@
+- sensor:
+    - name: "Home Gas (kWh)"
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state: "{{ (states('sensor.home_gas')|int * 1.02264 * 39.4) / 3.6 }}"
+      state_class: total
+      unique_id: "hildebrand_hosted_mqtt_home_gas_kwh"
+      icon: "mdi:fire"
+
+    # - name: "Gas Consumption  (kWh)"
+    #   unit_of_measurement: "kWh"
+    #   device_class: energy
+    #   state: "{{ (states('sensor.home_gas')|int * 1.02264 * 39.4) / 3.6 }}"
+    #   state_class: total
+    #   unique_id: "hildebrand_hosted_mqtt_home_gas_kwh"
+    #   icon: "mdi:fire"
+
+    - name: "home.adhd.energy Device Count"
+      state: "{{ states.device_tracker | selectattr('attributes.essid','defined') | selectattr('attributes.essid','eq','home.adhd.energy') | list | count }}"
+      state_class: measurement
+      unique_id: "home_adhd_energy_device_count"
+      icon: "mdi:devices"
+
+    - name: "guest.adhd.energy Device Count"
+      state: "{{ states.device_tracker | selectattr('attributes.essid','defined') | selectattr('attributes.essid','eq','guest.adhd.energy') | list | count }}"
+      state_class: measurement
+      unique_id: "guest_adhd_energy_device_count"
+      icon: "mdi:devices"
+
+    - name: "iot.adhd.energy Device Count"
+      state: "{{ states.device_tracker | selectattr('attributes.essid','defined') | selectattr('attributes.essid','eq','iot.adhd.energy') | list | count }}"
+      state_class: measurement
+      unique_id: "iot_adhd_energy_device_count"
+      icon: "mdi:devices"

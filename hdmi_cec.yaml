@@ -1,0 +1,5 @@
+host: 192.168.1.215
+devices:
+  1: Pi 3
+  2: Soundbar CEC
+platform: media_player

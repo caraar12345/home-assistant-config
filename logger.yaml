@@ -1,0 +1,5 @@
+default: info
+logs:
+  homeassistant.components.hdmi_cec: debug
+  homeassistant.components.tapo: debug
+  custom_components.tapo: debug

@@ -1,0 +1,20 @@
+# Example .gitignore file for your config dir.
+# An * ensures that everything will be ignored.
+*
+# You can whitelist files/folders with !, these will not be ignored.
+!.storage/
+.storage/*
+!.storage/broadlink_remote_24dfa7d60b52_codes
+!*.yaml
+!.gitignore
+!*.md
+
+# Ignore folders.
+.cloud
+.google.token
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+automations.yaml
