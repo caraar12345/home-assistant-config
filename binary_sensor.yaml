@@ -8,3 +8,7 @@
   name: Weather Warning
   country: united-kingdom
   province: East Midlands
+
+- platform: workday
+  country: GB
+  province: England

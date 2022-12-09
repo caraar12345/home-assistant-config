@@ -6,16 +6,36 @@ learn_soundbar_ir:
     data:
       device: soundbar_ir
       command:
-        - power
-        - mute
-        - vol_down
-        - vol_up
-        - sub_down
-        - sub_up
-        - trb_down
-        - trb_up
-        - src_coax
-        - src_hdmi_arc
-        - src_aux
-        - src_optical
-        - src_bluetooth
+      - power
+      - mute
+      - vol_down
+      - vol_up
+      - sub_down
+      - sub_up
+      - trb_down
+      - trb_up
+      - src_coax
+      - src_hdmi_arc
+      - src_aux
+      - src_optical
+      - src_bluetooth
+soundbar_source:
+  alias: Soundbar Source
+  sequence:
+  - service: remote.send_command
+    data:
+      device: soundbar_ir
+      command: "{% set mapper = {\n  'Optical':'src_optical',\n  'HDMI ARC':'src_hdmi_arc',\n
+        \ 'Bluetooth':'src_bluetooth',\n  'AUX':'src_aux'} %}\n{{ mapper[source] if
+        source in mapper else 'src_optical' }}\n"
+      num_repeats: 3
+      delay_secs: 0.1
+    target:
+      entity_id: remote.broadlink_remote
+  - service: input_select.select_option
+    data:
+      option: '{{ source }}'
+    target:
+      entity_id: input_select.soundbar_source
+  mode: single
+  icon: mdi:soundbar

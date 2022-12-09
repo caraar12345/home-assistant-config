@@ -1,5 +1,4 @@
-default: info
+default: warning
 logs:
-  homeassistant.components.hdmi_cec: debug
-  homeassistant.components.tapo: debug
-  custom_components.tapo: debug
+  custom_components.lghorizon: debug
+  lghorizon: debug
