@@ -1,5 +1,5 @@
-urls:
-  - https://github.com/openssl/openssl/tags.atom
-scan_interval:
-  minutes: 2
-max_entries: 5
+#urls:
+#  - https://github.com/openssl/openssl/tags.atom
+#scan_interval:
+#  minutes: 2
+#max_entries: 5
