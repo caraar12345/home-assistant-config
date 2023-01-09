@@ -7,7 +7,6 @@ calendar: !include calendar.yaml
 camera: !include camera.yaml
 climate: !include climate.yaml
 device_tracker: !include device_tracker.yaml
-feedreader: !include feedreader.yaml
 frontend: !include frontend.yaml
 genius_lyrics: !include genius_lyrics.yaml
 group: !include groups.yaml
@@ -33,6 +32,8 @@ switch: !include switch.yaml
 template: !include template.yaml
 tts: !include tts.yaml
 wake_on_lan:
-
 #disabled:
 #  alarm_control_panel: !include alarm_control_panel.yaml
+#  feedreader: !include feedreader.yaml
+#  image_processing: !include image_processing.yaml
+

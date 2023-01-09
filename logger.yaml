@@ -1,4 +1,4 @@
 default: warning
-logs:
-  custom_components.lghorizon: debug
-  lghorizon: debug
+# logs:
+# custom_components.lghorizon: debug
+# lghorizon: debug

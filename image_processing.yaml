@@ -1,0 +1,3 @@
+- platform: qrcode
+  source:
+    - entity_id: camera.stairs
