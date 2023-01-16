@@ -23,3 +23,8 @@
     soundbar_on:
       friendly_name: "Soundbar power status"
       value_template: "{{ states('media_player.hdmi_5') }}"
+
+- platform: lastfm
+  api_key: !secret last_fm_api_key
+  users:
+    - aaroncarson0
