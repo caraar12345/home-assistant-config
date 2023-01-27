@@ -1,3 +1,6 @@
 - platform: ping
   hosts:
     pi_4: 192.168.1.72
+#- platform: icloud3
+#  username: !secret icloud_email
+#  password: !secret icloud_password

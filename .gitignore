@@ -18,5 +18,5 @@ ip_bans.yaml
 secrets.yaml
 known_devices.yaml
 automations.yaml
+go2rtc.yaml
 
-# testing
