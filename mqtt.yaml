@@ -19,7 +19,117 @@ binary_sensor:
     payload_off: "off"
 
 sensor:
-  - name: "Home Instant Electricity"
+  - name: "Electricity - Current Power Usage"
+    device_class: power
+    expire_after: 3600
+    unit_of_measurement: "W"
+    value_template: "{{ value_json['electricitymeter']['power']['value'] * 1000 }}"
+    unique_id: glow_cad_current_power_usage
+    icon: "mdi:flash"
+    state_class: measurement
+    <<: &glow_cad_elec
+      state_topic: !secret glow_cad_local_mqtt_sensor_elec_topic
+      json_attributes_topic: !secret glow_cad_local_mqtt_sensor_elec_topic
+      json_attributes_template: "{{ value_json['electricitymeter']['energy']['import'] | to_json }}"
+      <<: &glow_cad_boilerplate
+        availability_topic: !secret glow_cad_local_mqtt_state_topic
+        availability_template: "{{ value_json['han']['status'] }}"
+        payload_available: "joined"
+        payload_not_available: "not joined"
+        device:
+          name: Glow CAD
+          manufacturer: "Hildebrand"
+          model: "Glow IHD/CAD SMETS2"
+          connections: [["mac", "78:e3:6d:d0:1a:3c"]]
+
+  - name: "Electricity - Cumulative Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['electricitymeter']['energy']['import']['cumulative'] }}"
+    unique_id: glow_cad_cumulative_usage
+    icon: "mdi:flash"
+    state_class: total_increasing
+    <<: *glow_cad_elec
+
+  - name: "Electricity - Today's Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['electricitymeter']['energy']['import']['day'] }}"
+    unique_id: glow_cad_todays_usage
+    icon: "mdi:flash"
+    state_class: total_increasing
+    <<: *glow_cad_elec
+
+  - name: "Electricity - This Week's Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['electricitymeter']['energy']['import']['week'] }}"
+    unique_id: glow_cad_this_weeks_usage
+    icon: "mdi:flash"
+    state_class: total_increasing
+    <<: *glow_cad_elec
+
+  - name: "Electricity - This Month's Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['electricitymeter']['energy']['import']['month'] }}"
+    unique_id: glow_cad_this_months_usage
+    icon: "mdi:flash"
+    state_class: total_increasing
+    <<: *glow_cad_elec
+
+  - name: "Gas - Cumulative Volume Usage"
+    device_class: gas
+    unit_of_measurement: "m³"
+    value_template: "{{ value_json['gasmeter']['energy']['import']['cumulativevol'] }}"
+    unique_id: glow_cad_gas_cumvol
+    icon: "mdi:fire"
+    state_class: total_increasing
+    <<: &glow_cad_gas
+      state_topic: !secret glow_cad_local_mqtt_sensor_gas_topic
+      json_attributes_topic: !secret glow_cad_local_mqtt_sensor_gas_topic
+      json_attributes_template: "{{ value_json['gasmeter']['energy']['import'] | to_json }}"
+      <<: *glow_cad_boilerplate
+
+  - name: "Gas - Cumulative Energy Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['gasmeter']['energy']['import']['cumulative'] }}"
+    unique_id: glow_cad_gas_cumeng
+    icon: "mdi:fire"
+    state_class: total_increasing
+    <<: *glow_cad_gas
+
+  - name: "Gas - Today's Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['gasmeter']['energy']['import']['day'] }}"
+    unique_id: glow_cad_gas_todays_usage
+    icon: "mdi:fire"
+    state_class: total_increasing
+    <<: *glow_cad_gas
+
+  - name: "Gas - This Week's Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['gasmeter']['energy']['import']['week'] }}"
+    unique_id: glow_cad_gas_this_weeks_usage
+    icon: "mdi:fire"
+    state_class: total_increasing
+    <<: *glow_cad_gas
+
+  - name: "Gas - This Month's Usage"
+    device_class: energy
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json['gasmeter']['energy']['import']['month'] }}"
+    unique_id: glow_cad_gas_this_months_usage
+    icon: "mdi:fire"
+    state_class: total_increasing
+    <<: *glow_cad_gas
+
+  ## Hildebrand hosted 👇
+
+  - name: "Home Instant Electricity (Hildebrand)"
     device_class: power
     state_topic: !secret hildebrand_glow_topic
     state_class: measurement
@@ -28,7 +138,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_instant_electricity"
     icon: "mdi:flash"
 
-  - name: "Home Electricity"
+  - name: "Home Electricity (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     device_class: energy
     unit_of_measurement: "kWh"
@@ -37,7 +147,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_electricity"
     icon: "mdi:flash"
 
-  - name: "Home Daily Electricity"
+  - name: "Home Daily Electricity (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     device_class: energy
     unit_of_measurement: "kWh"
@@ -46,7 +156,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_daily_electricity"
     icon: "mdi:flash"
 
-  - name: "Home Weekly Electricity"
+  - name: "Home Weekly Electricity (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     device_class: energy
     unit_of_measurement: "kWh"
@@ -55,7 +165,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_weekly_electricity"
     icon: "mdi:flash"
 
-  - name: "Home Monthly Electricity"
+  - name: "Home Monthly Electricity (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     device_class: energy
     unit_of_measurement: "kWh"
@@ -64,7 +174,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_monthly_electricity"
     icon: "mdi:flash"
 
-  - name: "Home Gas (m3)"
+  - name: "Home Gas (m3) (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     unit_of_measurement: "m³"
     device_class: gas
@@ -73,7 +183,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_gas"
     icon: "mdi:fire"
 
-  - name: "Home Daily Gas"
+  - name: "Home Daily Gas (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     unit_of_measurement: "kWh"
     device_class: energy
@@ -82,7 +192,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_daily_gas"
     icon: "mdi:fire"
 
-  - name: "Home Weekly Gas"
+  - name: "Home Weekly Gas (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     unit_of_measurement: "kWh"
     device_class: energy
@@ -91,7 +201,7 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_weekly_gas"
     icon: "mdi:fire"
 
-  - name: "Home Monthly Gas"
+  - name: "Home Monthly Gas (Hildebrand)"
     state_topic: !secret hildebrand_glow_topic
     unit_of_measurement: "kWh"
     device_class: energy

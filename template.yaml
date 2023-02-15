@@ -1,11 +1,11 @@
 - sensor:
-    - name: "Home Gas (kWh)"
-      unit_of_measurement: "kWh"
-      device_class: energy
-      state: "{{ (states('sensor.home_gas')|int * 1.02264 * 39.4) / 3.6 }}"
-      state_class: total
-      unique_id: "hildebrand_hosted_mqtt_home_gas_kwh"
-      icon: "mdi:fire"
+    # - name: "Home Gas (kWh)"
+    #   unit_of_measurement: "kWh"
+    #   device_class: energy
+    #   state: "{{ (states('sensor.home_gas')|int * 1.02264 * 39.4) / 3.6 }}"
+    #   state_class: total
+    #   unique_id: "hildebrand_hosted_mqtt_home_gas_kwh"
+    #   icon: "mdi:fire"
 
     # - name: "Gas Consumption  (kWh)"
     #   unit_of_measurement: "kWh"
@@ -32,3 +32,27 @@
       state_class: measurement
       unique_id: "iot_adhd_energy_device_count"
       icon: "mdi:devices"
+
+    - name: Electricity Cost Today
+      device_class: monetary
+      state: "{{ ((float(state_attr('sensor.electricity_today_s_usage','price').unitrate) * float(states('sensor.electricity_today_s_usage'))) + float(state_attr('sensor.electricity_today_s_usage','price').standingcharge)) | round(2) }}"
+      state_class: total
+      unit_of_measurement: GBP
+      icon: "mdi:currency-gbp"
+      unique_id: glow_cad_local_electricity_cost_today
+
+    - name: Gas Cost Today
+      device_class: monetary
+      state: "{{ ((float(state_attr('sensor.gas_today_s_usage','price').unitrate) * float(states('sensor.gas_today_s_usage'))) + float(state_attr('sensor.gas_today_s_usage','price').standingcharge)) | round(2) }}"
+      state_class: total
+      unit_of_measurement: GBP
+      icon: "mdi:currency-gbp"
+      unique_id: glow_cad_local_gas_cost_today
+
+    - name: Total Energy Cost Today
+      device_class: monetary
+      state: "{{ (float(states('sensor.electricity_cost_today')) + float(states('sensor.gas_cost_today')) | round(2)) }}"
+      state_class: total
+      unit_of_measurement: GBP
+      icon: "mdi:currency-gbp"
+      unique_id: glow_cad_local_energy_cost_today
