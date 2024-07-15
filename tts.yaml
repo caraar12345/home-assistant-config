@@ -1,1 +1,9 @@
 - platform: google_translate
+
+- platform: openai_tts
+  api_key: !secret openai_tts
+  # Optional parameters:
+  language: "en-GB"
+  model: "tts-1-hd"
+  voice: "fable"
+  speed: "1"

@@ -1,0 +1,6 @@
+- sensor:
+    command: "dig +retries=1 force.com | grep -A 100 'ANSWER SECTION:' | grep -Po '(?<=Query time: )[0-9a]*' || echo '-10'"
+    state_class: measurement
+    unit_of_measurement: ms
+    name: DNS Resolution Time
+    device_class: duration

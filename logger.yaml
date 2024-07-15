@@ -1,4 +1,7 @@
 default: warning
-# logs:
-# custom_components.lghorizon: debug
-# lghorizon: debug
+filters:
+  py.warnings:
+    - "InsecureRequestWarning"
+#logs:
+#  custom_components.lghorizon: debug
+#  lghorizon: debug

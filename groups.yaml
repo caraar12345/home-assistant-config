@@ -1,5 +1,5 @@
-bedroom_lights:
-  name: Bedroom lights
-  entities:
-    - light.bedroom
-    - light.bedroom_lamp
+#bedroom_lights:
+#  name: Bedroom lights
+#  entities:
+#    - light.bedroom
+#    - light.bedroom_lamp

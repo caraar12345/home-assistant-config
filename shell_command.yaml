@@ -1,0 +1,2 @@
+renew_unifi_cert: "ssh -i /ssl/.ssh/id_ed25519 -o 'UserKnownHostsFile /ssl/.ssh/unifi.adhd.energy.hostkey' root@unifi.adhd.energy 'nohup /root/cert_renewal/renew_cert.sh > /root/cert_renewal/cert_renewal_$(date +''%F_%T'').log 2>&1 < /dev/null &'"
+update_du_node_exporter: "ssh -i /ssl/.ssh/id_ed25519 -o 'UserKnownHostsFile /ssl/.ssh/a0d7b954-ssh.hostkey' root@a0d7b954-ssh -C '/share/node_exporter/du.sh'"

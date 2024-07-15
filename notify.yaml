@@ -24,3 +24,15 @@
 - name: sms_aaron
   platform: sms
   recipient: !secret my_mobile_number
+  
+- name: aaron_libby_ios
+  platform: group
+  services:
+    - service: mobile_app_libbys_iphone_464
+    - service: mobile_app_aaron_s_iphone_15
+    - service: mobile_app_aarons_macbook_air
+    - service: mobile_app_atlas
+    
+- name: monzo_file
+  platform: file
+  filename: monzo_aaron.txt

@@ -19,15 +19,29 @@ learn_soundbar_ir:
       - src_aux
       - src_optical
       - src_bluetooth
+learn_hdmi_switch_ir:
+  sequence:
+    service: remote.learn_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      device: hdmi_switch_ir
+      command:
+      - input_1
+      - input_2
+      - input_3
+      - input_4
+      - input_5
+      - input_cycle
 soundbar_source:
   alias: Soundbar Source
   sequence:
   - service: remote.send_command
     data:
       device: soundbar_ir
-      command: "{% set mapper = {\n  'Optical':'src_optical',\n  'HDMI ARC':'src_hdmi_arc',\n
-        \ 'Bluetooth':'src_bluetooth',\n  'AUX':'src_aux'} %}\n{{ mapper[source] if
-        source in mapper else 'src_optical' }}\n"
+      command: "{% set mapper = {\n  'TV':'src_optical',\n  'HDMI ARC':'src_hdmi_arc',\n
+        \ 'Bluetooth':'src_bluetooth',\n  'Echo Dot':'src_aux'} %}\n{{ mapper[source]
+        if source in mapper else 'src_optical' }}\n"
       num_repeats: 3
       delay_secs: 0.1
     target:
@@ -39,3 +53,555 @@ soundbar_source:
       entity_id: input_select.soundbar_source
   mode: single
   icon: mdi:soundbar
+get_weather_forecast_high_temp_today:
+  alias: Set today's weather forecast high/low temp
+  sequence:
+  - service: weather.get_forecasts
+    data:
+      type: daily
+    target:
+      entity_id: weather.home
+    response_variable: returned_forecast
+  - variables:
+      temps: "{% for date in returned_forecast['weather.home']['forecast'] %}\n  {%
+        set date_timestamp = strptime(date['datetime'], \"%Y-%m-%dT%H:%M:%SZ\").strftime(\"%s\")
+        %}\n  {% set today_timestamp = states(\"sensor.date\") | as_timestamp %}\n
+        \ {% if float(date_timestamp) == today_timestamp %}\n    [{{ date['templow']
+        | float }},{{ date['temperature'] | float }}]\n  {% endif %}\n{% endfor %}\n"
+      lowtemp: '{{ temps[0] }}'
+      hightemp: '{{ temps[1] }}'
+  - service: input_number.set_value
+    data_template:
+      value: '{{ hightemp }}'
+      entity_id: input_number.forecast_high_temperature
+  - service: input_number.set_value
+    data_template:
+      value: '{{ lowtemp }}'
+      entity_id: input_number.forecast_low_temperature
+  mode: single
+  icon: mdi:thermometer-check
+'1698407084251':
+  alias: New Script
+  sequence:
+  - service: scene.create
+    data:
+      snapshot_entities:
+      - light.front_door
+      scene_id: current_front_door
+    alias: Store the current light state
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 255
+      - 147
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 255
+      - 147
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 255
+      - 147
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 255
+      - 147
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 255
+      - 147
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: '{{ range(25, 250) | random | float }}'
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      brightness: 255
+    target:
+      entity_id: light.front_door
+  - service: scene.turn_on
+    data:
+      transition: 1
+    target:
+      entity_id: scene.current_front_door
+'1705781444862':
+  alias: Reset smart bulb
+  sequence:
+  - repeat:
+      sequence:
+      - service: switch.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.smart_plu
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      count: 10
+  mode: single
+hdmi_switch_input_1:
+  alias: HDMI Switch - Input 1
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_1
+      device: hdmi_switch_ir
+  mode: single
+  icon: mdi:numeric-1
+'1709809114671':
+  alias: HDMI Switch - Input 2
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_2
+      device: hdmi_switch_ir
+  mode: single
+  icon: mdi:numeric-2
+'1709809123772':
+  alias: HDMI Switch - Input 3
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_3
+      device: hdmi_switch_ir
+  mode: single
+  icon: mdi:numeric-3
+'1709809135912':
+  alias: HDMI Switch - Input 4
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_4
+      device: hdmi_switch_ir
+  mode: single
+  icon: mdi:numeric-4
+'1709809147046':
+  alias: HDMI Switch - Input 5
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_5
+      device: hdmi_switch_ir
+  mode: single
+  icon: mdi:numeric-5
+'1709809195596':
+  alias: HDMI Switch - Input Cycle
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_cycle
+      device: hdmi_switch_ir
+  mode: single
+  icon: mdi:rotate-right
+apple_tv_open_youtube:
+  alias: Apple TV - Open YouTube
+  sequence:
+  - service: media_player.turn_on
+    target:
+      entity_id: '{{ apple_tv }}'
+    alias: Turn on Apple TV
+  - service: media_player.select_source
+    metadata: {}
+    data:
+      source: YouTube
+    target:
+      entity_id: '{{ apple_tv }}'
+    alias: Open YouTube on it
+  mode: single
+  icon: mdi:youtube
+  fields:
+    apple_tv:
+      selector:
+        entity:
+          multiple: false
+      name: Apple TV
+      default: media_player.front_room_apple_tv
+      required: false
+front_room_apple_tv_bones:
+  alias: Front Room Apple TV - Bones
+  sequence:
+  - if:
+    - condition: state
+      entity_id: media_player.front_room_tv
+      state: 'off'
+    then:
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.front_room_tv
+      alias: Turn on TV
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.front_room_apple_tv
+      alias: Turn on Apple TV
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.soundbar
+      alias: Turn on Soundbar
+    alias: Only turn on TV if it's off
+  - alias: Set Soundbar to TV
+    service: media_player.select_source
+    metadata: {}
+    data:
+      source: TV
+    target:
+      entity_id: media_player.soundbar
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_5
+      device: hdmi_switch_ir
+    alias: HDMI Switch to Apple TV
+  - event: webos_front_room_source
+    event_data:
+      input_id: HDMI_2
+    alias: Switch to HDMI 2
+  - service: media_player.select_source
+    metadata: {}
+    data:
+      source: Disney+
+    target:
+      entity_id: media_player.front_room_apple_tv
+    alias: Open Disney+ on Apple TV
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: media_player.play_media
+    data:
+      media_content_type: url
+      media_content_id: https://www.disneyplus.com/en-gb/series/bones/3R0zhkw7f4TH
+    target:
+      entity_id: media_player.front_room_apple_tv
+    alias: Open Bones on Apple TV
+  mode: single
+  icon: mdi:bone
+tv_time:
+  alias: TV Time
+  sequence:
+  - service: media_player.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.front_room_tv
+  - service: homeassistant.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.soundbar
+  - wait_template: '{{ states("media_player.front_room_tv") | bool }}'
+    continue_on_timeout: false
+    timeout: '60'
+  - service: media_player.select_source
+    metadata: {}
+    data:
+      source: HDMI 2
+    target:
+      entity_id: media_player.front_room_tv
+  mode: single
+  icon: mdi:television
+front_room_apple_tv_the_good_place:
+  alias: Front Room Apple TV - The Good Place
+  sequence:
+  - if:
+    - condition: state
+      entity_id: media_player.front_room_tv
+      state: 'off'
+    then:
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.front_room_tv
+      alias: Turn on TV
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.front_room_apple_tv
+      alias: Turn on Apple TV
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.soundbar
+      alias: Turn on Soundbar
+    alias: Only turn on TV if it's off
+  - alias: Set Soundbar to TV
+    service: media_player.select_source
+    metadata: {}
+    data:
+      source: TV
+    target:
+      entity_id: media_player.soundbar
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_5
+      device: hdmi_switch_ir
+    alias: HDMI Switch to Apple TV
+  - event: webos_front_room_source
+    event_data:
+      input_id: HDMI_2
+    alias: Switch to HDMI 2
+  - service: media_player.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.front_room_apple_tv
+    alias: Turn on Front Room Apple TV
+  - service: media_player.select_source
+    metadata: {}
+    data:
+      source: Netflix
+    target:
+      entity_id: media_player.front_room_apple_tv
+    alias: Open Netflix on Apple TV
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+    enabled: false
+  - sequence:
+    - service: remote.send_command
+      metadata: {}
+      data:
+        num_repeats: 1
+        delay_secs: 0.2
+        hold_secs: 0
+        command: right
+      target:
+        entity_id: remote.front_room_apple_tv
+    - service: remote.send_command
+      metadata: {}
+      data:
+        num_repeats: 5
+        delay_secs: 0.2
+        hold_secs: 0
+        command: down
+      target:
+        entity_id: remote.front_room_apple_tv
+    - service: remote.send_command
+      metadata: {}
+      data:
+        num_repeats: 1
+        delay_secs: 0.2
+        hold_secs: 0
+        command: select
+      target:
+        entity_id: remote.front_room_apple_tv
+    alias: Select Aaron's Netflix profile
+    enabled: false
+  - alias: Open The Good Place on Apple TV
+    service: media_player.play_media
+    data:
+      media_content_type: url
+      media_content_id: nflx://www.netflix.com/watch/80191854
+    target:
+      entity_id: media_player.front_room_apple_tv
+    enabled: false
+  mode: single
+  icon: mdi:thumbs-up-down
+  description: ''
+lg_hdmi:
+  alias: LG HDMI
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ tv == "front_room" }}'
+      sequence:
+      - event: webos_front_room_source
+        event_data:
+          input_id: '{{ hdmi }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ tv == "bedroom" }}'
+      sequence:
+      - event: webos_bedroom_source
+        event_data:
+          input_id: '{{ hdmi }}'
+  fields:
+    tv:
+      selector:
+        text:
+          multiple: true
+          multiline: false
+      name: TV
+      default: []
+      required: true
+    hdmi:
+      selector:
+        text:
+          multiple: true
+      name: hdmi
+      default: []
+      required: true
+  description: ''
+  icon: mdi:video-input-hdmi

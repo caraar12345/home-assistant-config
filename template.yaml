@@ -15,14 +15,14 @@
     #   unique_id: "hildebrand_hosted_mqtt_home_gas_kwh"
     #   icon: "mdi:fire"
 
-    - name: "home.adhd.energy Device Count"
-      state: "{{ states.device_tracker | selectattr('attributes.essid','defined') | selectattr('attributes.essid','eq','home.adhd.energy') | list | count }}"
+    - name: "Wi-Fi Straight To My Heart Device Count"
+      state: "{{ states.device_tracker | selectattr('attributes.essid','defined') | selectattr('attributes.essid','eq','Wi-Fi Straight To My Heart') | list | count }}"
       state_class: measurement
       unique_id: "home_adhd_energy_device_count"
       icon: "mdi:devices"
 
-    - name: "guest.adhd.energy Device Count"
-      state: "{{ states.device_tracker | selectattr('attributes.essid','defined') | selectattr('attributes.essid','eq','guest.adhd.energy') | list | count }}"
+    - name: "Big LAN, Little Dignity Device Count"
+      state: "{{ states.device_tracker | selectattr('attributes.essid','defined') | selectattr('attributes.essid','eq','Big LAN, Little Dignity') | list | count }}"
       state_class: measurement
       unique_id: "guest_adhd_energy_device_count"
       icon: "mdi:devices"
@@ -35,7 +35,7 @@
 
     - name: Electricity Cost Today
       device_class: monetary
-      state: "{{ ((float(state_attr('sensor.electricity_today_s_usage','price').unitrate) * float(states('sensor.electricity_today_s_usage'))) + float(state_attr('sensor.electricity_today_s_usage','price').standingcharge)) | round(2) }}"
+      state: "{{ ((float(states('sensor.octopus_electricity_current_rate')) * float(states('sensor.electricity_today_s_usage'))) + float(states('sensor.octopus_electricity_current_standing_charge'))) | round(2) }}"
       state_class: total
       unit_of_measurement: GBP
       icon: "mdi:currency-gbp"
@@ -43,7 +43,7 @@
 
     - name: Gas Cost Today
       device_class: monetary
-      state: "{{ ((float(state_attr('sensor.gas_today_s_usage','price').unitrate) * float(states('sensor.gas_today_s_usage'))) + float(state_attr('sensor.gas_today_s_usage','price').standingcharge)) | round(2) }}"
+      state: "{{ ((float(states('sensor.octopus_gas_current_rate')) * float(states('sensor.gas_today_s_usage'))) + float(states('sensor.octopus_gas_current_standing_charge'))) | round(2) }}"
       state_class: total
       unit_of_measurement: GBP
       icon: "mdi:currency-gbp"
@@ -56,3 +56,93 @@
       unit_of_measurement: GBP
       icon: "mdi:currency-gbp"
       unique_id: glow_cad_local_energy_cost_today
+
+    - name: Current Electricity Cost Per Hour
+      state: "{{ ((float(states('sensor.electricity_current_power_usage'))/1000)*float(states('sensor.octopus_electricity_current_rate'))) | round(2) }}"
+      unit_of_measurement: "/hr"
+      state_class: measurement
+      icon: "mdi:currency-gbp"
+      unique_id: "glow_cad_octopus_cph"
+    
+    
+    - name: Current Electricity Cost Per Hour (string)
+      state: "£{{ '{:.2f}'.format(states('sensor.current_electricity_cost_per_hour') | float) }}"
+      unique_id: "glow_cad_octopus_cph_string"
+    
+    - name: "Ping - 1.1.1.1"
+      unit_of_measurement: 'ms'
+      state: "{{ state_attr('binary_sensor.1_1_1_1', 'round_trip_time_avg') }}"
+      state_class: measurement
+      unique_id: ping_1111_avg
+      
+- binary_sensor:
+    - name: "Always on"
+      state: "on"
+    
+    - name: "Tumble dryer is on"
+      state: "{{ states('sensor.tumble_dryer_current_consumption')|float(0) > 1500 }}"
+      unique_id: "tumble_dryer_on_template"
+      delay_off: "00:02:00"
+    
+- trigger:
+      - platform: event
+        event_type: "imap_content"
+        id: "imap_event"
+  sensor:
+      - name: Latest email
+        unique_id: hass_svc_adhd_energy_latest_email
+        state: "{{ trigger.event.data['subject'] }}"
+        attributes:
+          Message: "{{ trigger.event.data['text'] }}"
+          Server: "{{ trigger.event.data['server'] }}"
+          Username: "{{ trigger.event.data['username'] }}"
+          Search: "{{ trigger.event.data['search'] }}"
+          Folder: "{{ trigger.event.data['folder'] }}"
+          Sender: "{{ trigger.event.data['sender'] }}"
+          Date: "{{ trigger.event.data['date'] }}"
+          Subject: "{{ trigger.event.data['subject'] }}"
+          Initial: "{{ trigger.event.data['initial'] }}"
+          To: "{{ trigger.event.data['headers'].get('Delivered-To', ['n/a'])[0] }}"
+          Return-Path: "{{ trigger.event.data['headers'].get('Return-Path',['n/a'])[0] }}"
+          Received-first: "{{ trigger.event.data['headers'].get('Received',['n/a'])[0] }}"
+          Received-last: "{{ trigger.event.data['headers'].get('Received',['n/a'])[-1] }}"
+          
+- trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.tumble_dryer_is_on
+      from: "off"
+      to: "on"
+  sensor:
+      - name: Tumble Dryer - consumption at start
+        unique_id: tumble_dryer_consumption_at_start
+        state: '{{ float(states("sensor.tumble_dryer_today_s_consumption")) }}'
+        
+- trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.tumble_dryer_is_on
+      from: "on"
+      to: "off"
+  sensor:
+      - name: Tumble Dryer - consumption at end
+        unique_id: tumble_dryer_consumption_at_end
+        state: '{{ float(states("sensor.tumble_dryer_today_s_consumption")) }}'
+
+- trigger:
+    - platform: state
+      entity_id:
+        - sensor.tumble_dryer_consumption_at_end
+  sensor:
+      - name: Tumble Dryer - last session consumption
+        unique_id: tumble_dryer_last_session_consumption
+        state: '{{ states("sensor.tumble_dryer_consumption_at_end") - states("sensor.tumble_dryer_consumption_at_start") }}'
+
+- trigger:
+    - platform: state
+      entity_id:
+        - sensor.tumble_dryer_last_session_consumption
+  sensor:
+    - name: Tumble Dryer - last session cost
+      unique_id: tumble_dryer_last_session_cost
+      state: '{{ ((states("sensor.tumble_dryer_today_s_consumption") | float) * (states("sensor.octopus_electricity_current_rate") | float)) | round(4) }}'

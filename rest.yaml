@@ -1,0 +1,30 @@
+- resource: https://api.sainsburys.co.uk/v1/exports/latest/fuel_prices_data.json
+  sensor:
+    - name: "Sainsbury's Petrol"
+      json_attributes_path: "$.stations[?(@.site_id=='gcr6e0vwft2b')]"
+      json_attributes:
+        - brand
+        - address
+        - postcode
+        - location
+        - prices
+      value_template: "OK"
+#- resource: http://octave.iot.adhd.energy/han/get_meter_info
+#  scan_interval: 60
+#  payload: '{"meter_type":"elec"}'
+#  method: POST
+#  headers: 
+#    Content-Type: "application/json"
+#  sensor:
+#  - name: OHP Electricity Meter EUI
+#    value_template: '{% set minfo = value_json["meter_info"]|from_json%}{{minfo.minfo.eui}}'
+#- resource: http://octave.iot.adhd.energy/han/get_meter_info
+#  scan_interval: 60
+#  payload: '{"meter_type":"gas"}'
+#  method: POST
+#  headers: 
+#    Content-Type: "application/json"
+#  sensor:
+#  - name: OHP Gas Meter EUI
+#    value_template: '{% set minfo = value_json["meter_info"]|from_json%}{{minfo.minfo.eui}}'
+    

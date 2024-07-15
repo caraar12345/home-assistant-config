@@ -19,4 +19,4 @@ secrets.yaml
 known_devices.yaml
 automations.yaml
 go2rtc.yaml
-
+proxmoxve.yaml

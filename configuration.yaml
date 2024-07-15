@@ -3,16 +3,15 @@ default_config:
 automation: !include automations.yaml
 binary_sensor: !include binary_sensor.yaml
 browser_mod: !include browser_mod.yaml
-calendar: !include calendar.yaml
 camera: !include camera.yaml
 climate: !include climate.yaml
-device_tracker: !include device_tracker.yaml
+command_line: !include command_line.yaml
 frontend: !include frontend.yaml
 genius_lyrics: !include genius_lyrics.yaml
 group: !include groups.yaml
-hdmi_cec: !include hdmi_cec.yaml
 homekit: !include homekit.yaml
 http: !include http.yaml
+ics_calendar: !include ics_calendar.yaml
 influxdb: !include influxdb.yaml
 logger: !include logger.yaml
 mailgun: !include mailgun.yaml
@@ -20,11 +19,14 @@ media_player: !include media_player.yaml
 mqtt: !include mqtt.yaml
 notify: !include notify.yaml
 proxmoxve: !include proxmoxve.yaml
+prometheus: !include prometheus.yaml
 recorder: !include recorder.yaml
+rest: !include rest.yaml
 rest_command: !include rest_command.yaml
 scene: !include scenes.yaml
 script: !include scripts.yaml
 sensor: !include sensor.yaml
+shell_command: !include shell_command.yaml
 simpleicons:
 smartir:
 spotcast: !include spotcast.yaml
@@ -33,8 +35,11 @@ switch: !include switch.yaml
 template: !include template.yaml
 tts: !include tts.yaml
 wake_on_lan:
-#disabled:
-#  alarm_control_panel: !include alarm_control_panel.yaml
-#  feedreader: !include feedreader.yaml
-#  image_processing: !include image_processing.yaml
 
+homeassistant:
+  allowlist_external_dirs:
+  - /share
+  - /config
+  customize:
+    zone.home:
+      radius: 30

@@ -1,0 +1,3 @@
+calendars:
+    - name: "On-call Schedule"
+      url: !secret pagerduty_oncall_ics_url

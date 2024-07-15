@@ -1,0 +1,9 @@
+filter:
+  include_entity_globs:
+    - sensor.*temperature
+    - sensor.*humidity
+    - sensor.*current*
+    - sensor.*cost*
+    - sensor.front_room_aqm_pm25
+    - sensor.sabnzbd*
+    - sensor.system_monitor*

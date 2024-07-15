@@ -5,8 +5,10 @@
   nodes:
     - node: proxmoxmac
       vms:
-        - 100
-        - 101
+        - 100 # rattmann
+        - 101 # ubu2110mac
+      containers:
+        - 107 # logstash
 
 - host: !secret aaroncarsonpve_ip
   verify_ssl: false
@@ -15,10 +17,12 @@
   nodes:
     - node: aaroncarsonpve
       vms:
-        - 100
-        - 101
-        - 103
-        - 112
-        - 999
+        - 100 # aaroncarson2018
+        - 101 # space-core
+        - 103 # reverse.adhd.energy
+        - 109 # download-server
+        - 999 # authentik
       containers:
-        - 102
+        - 102 # fleetdm
+        - 200 # dns.srv.adhd.energy
+        - 750 # db

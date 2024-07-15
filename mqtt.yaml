@@ -17,6 +17,20 @@ binary_sensor:
     unique_id: "soundbar_mqtt_cec"
     payload_on: "on"
     payload_off: "off"
+    
+  - name: "Garden Camera Motion Detected"
+    state_topic: "scrypted/garden_cam/motionDetected"
+    device_class: motion
+    unique_id: "garden_cam_scrypted_mqtt_motion"
+    payload_on: "true"
+    payload_off: "false"
+
+  - name: "Cat Food Camera Motion Detected"
+    state_topic: "Kitchen/CatFoodCam/motion"
+    device_class: motion
+    unique_id: "catfoodcam_mqtt_motion"
+    payload_on: "ON"
+    payload_off: "OFF"
 
 sensor:
   - name: "Electricity - Current Power Usage"
@@ -127,6 +141,61 @@ sensor:
     state_class: total_increasing
     <<: *glow_cad_gas
 
+  - name: "Fire HD Battery Level"
+    state_topic: !secret fully_kiosk_device_info_topic
+    device_class: battery
+    value_template: "{{ value_json['batteryLevel'] }}"
+    unique_id: "fire_wallpanel_fkb_battery_level"
+    unit_of_measurement: "%"
+
+  - name: "CAD HAN Status"
+    state_topic: !secret glow_cad_local_mqtt_state_topic
+    value_template: "{{ value_json['han']['status'] }}"
+    unique_id: "glowmarkt_local_mqtt_cad_han_status"
+    json_attributes_topic: !secret glow_cad_local_mqtt_state_topic
+
+  - name: SMS2MQTT Signal Strength
+    state_topic: sms2mqtt/signal
+    value_template: "{{ value_json['SignalStrength'] }}"
+    unique_id: sms2mqtt_signal_strength_1
+    json_attributes_topic: sms2mqtt/signal
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement
+    unit_of_measurement: dBm
+
+  - name: SMS2MQTT Signal Percentage
+    state_topic: sms2mqtt/signal
+    value_template: "{{ value_json['SignalPercent'] }}"
+    unique_id: sms2mqtt_signal_percent_1
+    json_attributes_topic: sms2mqtt/signal
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement
+    unit_of_measurement: "%"
+
+  - name: SMS2MQTT Network Name
+    state_topic: sms2mqtt/network
+    value_template: "{{ value_json['NetworkName'] }}"
+    unique_id: sms2mqtt_network_name_1
+    json_attributes_topic: sms2mqtt/network
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement
+
+  - name: SMS2MQTT Latest Message
+    state_topic: sms2mqtt/received
+    value_template: "{{ value_json['text'] }}"
+    unique_id: sms2mqtt_received_sms_1
+    json_attributes_topic: sms2mqtt/received
+    availability_topic: sms2mqtt/connected
+    payload_available: "1"
+    payload_not_available: "0"
+    state_class: measurement
+
   ## Hildebrand hosted 👇
 
   - name: "Home Instant Electricity (Hildebrand)"
@@ -210,57 +279,43 @@ sensor:
     unique_id: "hildebrand_hosted_mqtt_home_monthly_gas"
     icon: "mdi:fire"
 
-  - name: "Fire HD Battery Level"
-    state_topic: !secret fully_kiosk_device_info_topic
-    device_class: battery
-    value_template: "{{ value_json['batteryLevel'] }}"
-    unique_id: "fire_wallpanel_fkb_battery_level"
-    unit_of_measurement: "%"
+#####
 
-  - name: "CAD HAN Status"
-    state_topic: !secret glow_cad_local_mqtt_state_topic
-    value_template: "{{ value_json['han']['status'] }}"
-    unique_id: "glowmarkt_local_mqtt_cad_han_status"
-    json_attributes_topic: !secret glow_cad_local_mqtt_state_topic
+  - name: "R207 Latest SMS manual"
+    state_topic: "homeassistant/sensor/vodafone-r207-sms-mqtt/K7TDW14A10002693/received_sms"
+    value_template: "{{ value_json['content'] }}"
+    json_attributes_topic: "homeassistant/sensor/vodafone-r207-sms-mqtt/K7TDW14A10002693/received_sms"
 
-  - name: SMS2MQTT Signal Strength
-    state_topic: sms2mqtt/signal
-    value_template: "{{ value_json['SignalStrength'] }}"
-    unique_id: sms2mqtt_signal_strength_1
-    json_attributes_topic: sms2mqtt/signal
-    availability_topic: sms2mqtt/connected
-    payload_available: "1"
-    payload_not_available: "0"
-    state_class: measurement
-    unit_of_measurement: dBm
+  - name: Zigbee Network Map
+    state_topic: zigbee2mqtt/bridge/response/networkmap
+    value_template: >-
+      {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+    json_attributes_topic: zigbee2mqtt/bridge/response/networkmap
+    json_attributes_template: "{{ value_json.data.value | tojson }}"
+    
 
-  - name: SMS2MQTT Signal Percentage
-    state_topic: sms2mqtt/signal
-    value_template: "{{ value_json['SignalPercent'] }}"
-    unique_id: sms2mqtt_signal_percent_1
-    json_attributes_topic: sms2mqtt/signal
-    availability_topic: sms2mqtt/connected
-    payload_available: "1"
-    payload_not_available: "0"
-    state_class: measurement
-    unit_of_measurement: "%"
+  - name: "Landline Caller ID"
+    state_topic: "ncid"
+    value_template: "{{ value_json['NMBR'] }}"
+    json_attributes_topic: "ncid"
+    unique_id: "landline_caller_id_ncid"
+    
+  - name: OHP Electricity EUI MQTT
+    state_topic: "homepro/elec_meter/info"
+    value_template: '{{ value_json["minfo"]["eui"] }}'
+    unique_id: "ohp_elec_eui_mqtt"
+    device:
+      name: Octopus Home Pro
+      manufacturer: "Octopus Energy"
+      model: "Home Pro"
+      connections: [["mac", "2c:11:65:41:75:0c"]]
 
-  - name: SMS2MQTT Network Name
-    state_topic: sms2mqtt/network
-    value_template: "{{ value_json['NetworkName'] }}"
-    unique_id: sms2mqtt_network_name_1
-    json_attributes_topic: sms2mqtt/network
-    availability_topic: sms2mqtt/connected
-    payload_available: "1"
-    payload_not_available: "0"
-    state_class: measurement
-
-  - name: SMS2MQTT Latest Message
-    state_topic: sms2mqtt/received
-    value_template: "{{ value_json['text'] }}"
-    unique_id: sms2mqtt_received_sms_1
-    json_attributes_topic: sms2mqtt/received
-    availability_topic: sms2mqtt/connected
-    payload_available: "1"
-    payload_not_available: "0"
-    state_class: measurement
+  - name: OHP Gas EUI MQTT
+    state_topic: "homepro/gas_meter/info"
+    value_template: '{{ value_json["minfo"]["eui"] }}'
+    unique_id: "ohp_gas_eui_mqtt"
+    device:
+      name: Octopus Home Pro
+      manufacturer: "Octopus Energy"
+      model: "Home Pro"
+      connections: [["mac", "2c:11:65:41:75:0c"]]

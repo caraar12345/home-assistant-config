@@ -9,3 +9,21 @@ google_home_broadcast:
       "command":"{{ command }}",
       "broadcast":"{{ broadcast | default('true') }}"
     }
+
+incident_io_alert:
+  url: !secret incident_io_alert_url
+  method: POST
+  headers:
+    authorization: !secret incident_io_alert_auth
+  payload: |
+    {
+      "title": "{{ title | default("New alert") }}",
+      "description": "{{ description }}",
+      "deduplication_key": "{{ deduplication_key | default(now() | string) }}",
+      "status": "{{ status | default("firing") }}",
+      "metadata": {
+        "service": "{{ service }}",
+        "entity": "{{ entity }}",
+        "device": "{{ device }}"
+      }
+    }

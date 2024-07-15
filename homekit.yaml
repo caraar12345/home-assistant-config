@@ -8,10 +8,24 @@
     camera.doorbell:
       linked_battery_sensor: sensor.doorbell_battery
       linked_doorbell_sensor: binary_sensor.doorbell_ding
-      linked_motion_sensor: binary_sensor.door
-      low_battery_threshold: 60
+      linked_motion_sensor: binary_sensor.doorbell_motion
+      low_battery_threshold: 25
       support_audio: true
       video_codec: copy
+      
+- port: 21068
+  name: Middle Room
+  mode: accessory
+  filter:
+    include_entities:
+      - camera.middle_room
+
+- port: 21081
+  name: Cat Food
+  mode: accessory
+  filter:
+    include_entities:
+      - camera.cat_food
 
 - port: 21080
   name: Alarmo
@@ -45,8 +59,6 @@
       - binary_sensor.heating_open_window
       - binary_sensor.kitchen_motion
       - binary_sensor.living_room_motion
-      - binary_sensor.living_room_left_window_contact
-      - binary_sensor.stairs_motion
       - media_player.soundbar
     include_entity_globs:
       - sensor.air_conditioner*
@@ -55,17 +67,31 @@
       - sensor.doorbell*
     exclude_entities:
       - switch.pi_hole
-      - sensor.whole_flat_tado_outdoor_temperature
+      - sensor.whole_house_tado_outdoor_temperature
       - sensor.quest_battery_temperature
       - sensor.living_room_blind_device_temperature
       - sensor.processor_temperature
       - switch.dishwasher_2
+      - sensor.aaroncarson2020_gputemperature
+      - cover.living_room_blind
+      - switch.garden_privacy
+      - sensor.udr_cpu_temperature
+      - switch.calex_1_socket_1
+      - sensor.openweathermap_temperature
+      - sensor.openweathermap_feels_like_temperature
+      - sensor.openweathermap_humidity
+      - sensor.openweathermap_forecast_temperature
     exclude_entity_globs:
-      - binary_sensor.*
-      - "*.browser_*"
-      - media_player.*
-      - sensor.*
-      - switch.doorbell*
-      - "*fire_tablet*"
-      - "*fire_wallpanel*"
-      - "*fire_hd*"
+      - 'button.doorbell*'
+      - 'binary_sensor.*'
+      - '*.browser_*'
+      - 'media_player.*'
+      - 'sensor.*'
+      - 'switch.door*'
+      - '*fire_tablet*'
+      - '*fire_wallpanel*'
+      - '*fire_hd*'
+      - 'sensor.openweathermap*'
+      - '*kitchen*'
+      - 'button.garden_manual_alarm*'
+      - '*cpu_temperature'

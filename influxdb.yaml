@@ -6,5 +6,7 @@ default_measurement: state
 token: !secret influxdb_token
 organization: !secret influxdb_org
 bucket: home_assistant
-ssl: false
+ssl: true
 verify_ssl: false
+tags:
+  source: HA

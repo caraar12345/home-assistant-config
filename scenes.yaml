@@ -1,0 +1,59 @@
+- id: '1698407308258'
+  name: Front Room at Night
+  entities:
+    light.front_room_light:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      linkquality: 153
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:ceiling-light-outline
+      friendly_name: Front Room Light
+      supported_features: 40
+      state: 'off'
+    light.rgb_floor_lamp:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 9000
+      min_mireds: 111
+      max_mireds: 500
+      supported_color_modes:
+      - brightness
+      - color_temp
+      - rgb
+      color_mode: rgb
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 194.588
+      - 100
+      rgb_color:
+      - 0
+      - 193
+      - 255
+      xy_color:
+      - 0.146
+      - 0.242
+      http_enabled: true
+      ble_enabled: true
+      lan_enabled: true
+      update_status: ok at Fri Jun 14 12:02:52 2024
+      timeout_count: 0
+      icon: mdi:sign-pole
+      friendly_name: RGB Behind TV
+      supported_features: 0
+      state: 'on'
+    light.front_room_lamp:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:floor-lamp-outline
+      friendly_name: Front Room Lamp
+      supported_features: 0
+      state: 'on'
+  metadata: {}
+  icon: mdi:lightbulb-night

@@ -1,7 +1,17 @@
-- platform: tapo
-  host: 192.168.75.206
-  username: !secret gmail_email
-  password: !secret tapo_pass
+- platform: wake_on_lan
+  mac: "3c:7c:3f:7d:d0:a6"
+  host: 192.168.1.187
+  name: "Libby's PC - Sleep/Wake"
+  turn_off:
+    - service: button.press
+      target:
+        entity_id: button.libbypc_satellite_sleep
+
+#- platform: tapo
+#  host: 192.168.75.206
+#  username: !secret gmail_email
+#  password: !secret tapo_pass
+
 #- platform: broadlink
 #  mac: 24:df:a7:d6:0b:52
 #  switches:
