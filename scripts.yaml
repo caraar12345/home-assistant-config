@@ -605,3 +605,73 @@ lg_hdmi:
       required: true
   description: ''
   icon: mdi:video-input-hdmi
+front_room_apple_tv_9_1_1:
+  alias: Front Room Apple TV - 9-1-1
+  sequence:
+  - if:
+    - condition: state
+      entity_id: media_player.front_room_tv
+      state: 'off'
+    then:
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.front_room_tv
+      alias: Turn on TV
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.front_room_apple_tv
+      alias: Turn on Apple TV
+    - service: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.soundbar
+      alias: Turn on Soundbar
+    alias: Only turn on TV if it's off
+  - alias: Set Soundbar to TV
+    service: media_player.select_source
+    metadata: {}
+    data:
+      source: TV
+    target:
+      entity_id: media_player.soundbar
+  - service: remote.send_command
+    target:
+      entity_id: remote.broadlink_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      command: input_5
+      device: hdmi_switch_ir
+    alias: HDMI Switch to Apple TV
+  - event: webos_front_room_source
+    event_data:
+      input_id: HDMI_2
+    alias: Switch to HDMI 2
+  - service: media_player.select_source
+    metadata: {}
+    data:
+      source: Disney+
+    target:
+      entity_id: media_player.front_room_apple_tv
+    alias: Open Disney+ on Apple TV
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - alias: Open 9-1-1 on Apple TV
+    service: media_player.play_media
+    data:
+      media_content_type: url
+      media_content_id: https://www.disneyplus.com/en-gb/series/9-1-1/2m7rY4gecjQw
+    target:
+      entity_id: media_player.front_room_apple_tv
+  mode: single
+  icon: mdi:alarm-light
+  description: ''

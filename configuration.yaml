@@ -1,16 +1,16 @@
-default_config:
-
 automation: !include automations.yaml
 binary_sensor: !include binary_sensor.yaml
 browser_mod: !include browser_mod.yaml
 camera: !include camera.yaml
 climate: !include climate.yaml
 command_line: !include command_line.yaml
+default_config:
 frontend: !include frontend.yaml
 genius_lyrics: !include genius_lyrics.yaml
 group: !include groups.yaml
 homekit: !include homekit.yaml
 http: !include http.yaml
+homeassistant: !include homeassistant.yaml
 ics_calendar: !include ics_calendar.yaml
 influxdb: !include influxdb.yaml
 logger: !include logger.yaml
@@ -35,11 +35,3 @@ switch: !include switch.yaml
 template: !include template.yaml
 tts: !include tts.yaml
 wake_on_lan:
-
-homeassistant:
-  allowlist_external_dirs:
-  - /share
-  - /config
-  customize:
-    zone.home:
-      radius: 30

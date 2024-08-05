@@ -95,3 +95,4 @@
       - '*kitchen*'
       - 'button.garden_manual_alarm*'
       - '*cpu_temperature'
+      - 'light.*screen'

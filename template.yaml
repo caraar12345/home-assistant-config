@@ -74,6 +74,32 @@
       state: "{{ state_attr('binary_sensor.1_1_1_1', 'round_trip_time_avg') }}"
       state_class: measurement
       unique_id: ping_1111_avg
+
+    - name: "Kitchen Display Timer"
+      unique_id: kitchen_display_timer
+      icon: mdi:timer
+      state: >
+          {% set entity = 'sensor.kitchen_display_timers' %}
+          {% if state_attr(entity,'timers')|lower not in ['','[]','unknown','unavailable','none'] %}
+            {% set status = state_attr(entity,'timers')[0].status %}
+            {% if status == 'set' %} active
+            {% elif status == 'paused' %} paused
+            {% elif status == 'waiting' %} waiting
+            {% else %} idle
+            {% endif %}
+          {% endif %}
+      attributes:
+        duration: >
+            {% set entity = 'sensor.kitchen_display_timers' %}
+            {% if state_attr(entity,'timers')|lower not in ['','[]','unknown','unavailable','none'] %}
+              {{ state_attr(entity,'timers')[0].duration }}
+            {% endif %}
+        end_time: >
+            {% set entity = 'sensor.kitchen_display_timers' %}
+            {% if state_attr(entity,'timers')|lower not in ['','[]','unknown','unavailable','none'] %}
+              {{ state_attr(entity,'timers')[0].local_time_iso }}
+            {% endif %}
+        integration: google_home  
       
 - binary_sensor:
     - name: "Always on"

@@ -1,0 +1,6 @@
+allowlist_external_dirs:
+- /share
+- /config
+customize:
+    zone.home:
+        radius: 30
